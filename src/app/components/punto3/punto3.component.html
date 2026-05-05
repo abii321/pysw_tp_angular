@@ -1,19 +1,25 @@
-<div class="container row">
+<div class="container p-md-2 p-lg-4">
+    <div class="row">
 
-    <div class="col-md-9">
-        <div class="row">
-            <div class="col-3" *ngFor="let card of cards"> 
-                <div class="card" >
-                    <img [src]="card.url" class="card-img-top w-100" alt="carta" style="height: 150px; object-fit: cover;"> 
+        <div class="col-md-9">
+            <div class="row">
+                <div class="card col-12 col-sm-6 col-md-4 col-lg-3 border-0 g-2" *ngFor="let card of cards; let i = index" (click)="darVueltaCard(card,i)">
+                    <img [src]="!card.vuelta ? 'assets/images/card0.jpg' : card.url" class="card-img w-100 " alt="carta"
+                        style="height: 150px; object-fit: cover;">
                 </div>
-            </div> 
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-3">
-        <button class="btn btn-primary">Reiniciar</button>
-        <button class="btn btn-primary">Iniciar</button>
-        <button class="btn btn-primary">Intentar</button>
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="iniciarJuego()" *ngIf="juegoActivo==false && finPartida==false">Iniciar</button>
+            <p *ngIf="juegoActivo==true">Intentos: {{intentos}}</p>
+
+            <button class="btn btn-primary" *ngIf="juegoActivo==true || finPartida==true" (click)="reiniciarJuego()">Reiniciar</button>
+            <p *ngIf="ganador==true">Good game! You won!</p>
+            <p *ngIf="finPartida==true && ganador==false">Good try! You lost!</p>
+            
+            <button class="btn btn-primary" *ngIf="juegoActivo==true" (click)="intentarJuego()">Intentar</button>
+        </div>
     </div>
 
 </div>
