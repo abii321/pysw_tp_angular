@@ -26,6 +26,7 @@
 </div>
 
 <!-- Modal de Bootstrap para el carrito -->
+
 <div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="modalCarritoLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -37,16 +38,23 @@
         <div *ngIf="carrito.length === 0" class="alert alert-warning">
           El carrito está vacío.
         </div>
+
+
+   <ul class="list-group mb-3" *ngIf="carrito.length > 0">
+    <!-- Agregamos 'let i = index' para identificar cada fila -->
+    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of carrito; let i = index">
+        <div>
+        <h6 class="my-0">{{ item.nombre }}</h6>
+        <small class="text-muted">${{ item.precio }}</small>
+        </div>
         
-        <ul class="list-group mb-3" *ngIf="carrito.length > 0">
-          <li class="list-group-item d-flex justify-content-between lh-sm" *ngFor="let item of carrito">
-            <div>
-              <h6 class="my-0">{{ item.nombre }}</h6>
-            </div>
-            <span class="text-muted">${{ item.precio }}</span>
-          </li>
-        </ul>
-        
+        <!-- Botón para eliminar del carrito -->
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="quitarDelCarrito(i)">
+        &times;
+        </button>
+    </li>
+</ul>
+
         <div class="d-flex justify-content-between fs-5" *ngIf="carrito.length > 0">
           <span><strong>TOTAL</strong></span>
           <strong>${{ total }}</strong>
@@ -59,3 +67,4 @@
     </div>
   </div>
 </div>
+punto2.component.html

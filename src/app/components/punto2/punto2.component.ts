@@ -38,4 +38,10 @@ export class Punto2Component {
   calcularTotal() {
     this.total = this.carrito.reduce((acc, item) => acc + item.precio, 0);
   }
+  
+  // Función para quitar un producto del carrito
+  quitarDelCarrito(index: number) {
+    this.carrito.splice(index, 1);
+    this.calcularTotal();
+  }
 }
