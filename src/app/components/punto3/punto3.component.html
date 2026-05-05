@@ -10,15 +10,15 @@
             </div>
         </div>
 
-        <div class="col-md-3">
-            <button class="btn btn-primary" (click)="iniciarJuego()" *ngIf="juegoActivo==false && finPartida==false">Iniciar</button>
-            <p *ngIf="juegoActivo==true">Intentos: {{intentos}}</p>
+        <div class="col-md-3 align-content-center">
+            <button class="btn btn-primary" (click)="iniciarJuego()" *ngIf="juegoActivo==false && finPartida==true">Iniciar</button>
+            <p *ngIf="juegoActivo==true && finPartida==false">Intentos restantes: {{intentos}}</p>
 
-            <button class="btn btn-primary" *ngIf="juegoActivo==true || finPartida==true" (click)="reiniciarJuego()">Reiniciar</button>
+            <button class="btn btn-primary" *ngIf="juegoActivo==true || finPartida==false" (click)="reiniciarJuego()">Reiniciar</button>
             <p *ngIf="ganador==true">Good game! You won!</p>
-            <p *ngIf="finPartida==true && ganador==false">Good try! You lost!</p>
+            <p *ngIf="finPartida==true && ganador==false && juegoActivo==true">Good try! You lost!</p>
             
-            <button class="btn btn-primary" *ngIf="juegoActivo==true" (click)="intentarJuego()">Intentar</button>
+            <button class="btn btn-primary" *ngIf="finPartida==false" (click)="intentarJuego()">Intentar</button>
         </div>
     </div>
 
