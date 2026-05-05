@@ -1,11 +1,11 @@
 export class Punto3 {
     id: number;
     url: string;
-    encontrada: boolean;
+    vuelta: boolean;
 
-    constructor(id: number, url: string, encontrada: boolean){
+    constructor(id: number, url: string, vuelta: boolean){
         this.id = id;
         this.url = url;
-        this.encontrada = encontrada;
+        this.vuelta = vuelta;
     }
 }
