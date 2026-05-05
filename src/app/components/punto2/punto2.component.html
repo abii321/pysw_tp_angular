@@ -1,0 +1,70 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Productos Destacados</h2>
+    <!-- Botón que llama al modal de Bootstrap -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+      Ver Carrito <span class="badge bg-light text-dark ms-1">{{ carrito.length }}</span>
+    </button>
+  </div>
+
+  <!-- Lista de cards de productos -->
+  <div class="row">
+    <div class="col-md-3 mb-4" *ngFor="let prod of productos">
+      <div class="card h-100 shadow-sm">
+        <img [src]="prod.img" class="card-img-top" alt="{{ prod.nombre }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ prod.nombre }}</h5>
+          <p class="card-text text-muted">{{ prod.descripcion }}</p>
+          <h4 class="mt-auto">${{ prod.precio }}</h4>
+          <button class="btn btn-outline-success mt-3" (click)="agregarAlCarrito(prod)">
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Bootstrap para el carrito -->
+
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="modalCarritoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCarritoLabel">Resumen de Compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="carrito.length === 0" class="alert alert-warning">
+          El carrito está vacío.
+        </div>
+
+
+   <ul class="list-group mb-3" *ngIf="carrito.length > 0">
+    <!-- Agregamos 'let i = index' para identificar cada fila -->
+    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of carrito; let i = index">
+        <div>
+        <h6 class="my-0">{{ item.nombre }}</h6>
+        <small class="text-muted">${{ item.precio }}</small>
+        </div>
+        
+        <!-- Botón para eliminar del carrito -->
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="quitarDelCarrito(i)">
+        &times;
+        </button>
+    </li>
+</ul>
+
+        <div class="d-flex justify-content-between fs-5" *ngIf="carrito.length > 0">
+          <span><strong>TOTAL</strong></span>
+          <strong>${{ total }}</strong>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" *ngIf="carrito.length > 0">Abonar</button>
+      </div>
+    </div>
+  </div>
+</div>
+punto2.component.html
