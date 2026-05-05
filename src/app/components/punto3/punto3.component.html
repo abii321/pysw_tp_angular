@@ -1,1 +1,19 @@
-<p>punto3 works!</p>
+<div class="container row">
+
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-3" *ngFor="let card of cards"> 
+                <div class="card" >
+                    <img [src]="card.url" class="card-img-top w-100" alt="carta" style="height: 150px; object-fit: cover;"> 
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <button class="btn btn-primary">Reiniciar</button>
+        <button class="btn btn-primary">Iniciar</button>
+        <button class="btn btn-primary">Intentar</button>
+    </div>
+
+</div>
