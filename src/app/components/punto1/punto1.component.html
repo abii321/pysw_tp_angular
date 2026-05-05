@@ -1,0 +1,24 @@
+<div class="container mt-4 text-center">
+    <div class="card mx-auto" style="width: 18rem;">
+
+        <img [src]="'assets/images/' + eventos[indice].img" alt="Foto del evento" class="card-img-top">
+
+        <div class="card-body">
+
+            <h5 class="card-title">{{ eventos[indice].nombre }}</h5>
+            <p class="card-text">{{ eventos[indice].descripcion }}</p>
+
+            <div class="d-flex justify-content-between">
+                <!-- El botón se deshabilita si el índice es 0 (el inicio)[cite: 1] -->
+                <button class="btn btn-primary" (click)="anterior()" [disabled]="indice === 0">
+                    Anterior
+                </button>
+
+                <!-- El botón se deshabilita si llegamos al final del array[cite: 1] -->
+                <button class="btn btn-primary" (click)="siguiente()" [disabled]="indice === eventos.length - 1">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
