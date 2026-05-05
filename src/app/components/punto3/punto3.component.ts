@@ -31,8 +31,8 @@ export class Punto3Component {
   iniciarJuego(){
     this.juegoActivo = true;
     this.punto3Service.initGame();
-    this.intentos = 12; // nro aleatorio ?
-    this.ganador = false;
+    this.finPartida = false;
+    this.intentos = 14; // nro aleatorio ?
     this.pares = 0;
 
     this.cards = this.punto3Service.cards;
@@ -40,20 +40,18 @@ export class Punto3Component {
 
   reiniciarJuego(){
     this.juegoActivo = false;
-    this.finPartida = false;
+    this.finPartida = true;
+    this.ganador = false;
     this.punto3Service.endGame();
     
     this.cards = this.punto3Service.cards;
   }
 
   intentarJuego(){
+    if(this.levantarHabilitado!=0) return;
+
     this.levantarHabilitado=2;
     this.intentos--;
-    if(this.intentos==-1) {
-      this.juegoActivo=false;
-      this.finPartida=true;
-      this.finPartida=true;
-    }
   }
 
   delay(ms: number) {
@@ -80,9 +78,10 @@ export class Punto3Component {
       }
       else this.pares++;
       this.fIndex=-1; this.sIndex==-1;
+
+      if(this.pares==6) this.ganador=true;
+      if(this.intentos==0) this.finPartida=true;
     }
-    
-    if(this.pares==6) this.ganador=true;
     
   }
 }
