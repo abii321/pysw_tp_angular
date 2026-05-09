@@ -1,9 +1,84 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { InscripcionService } from '../../services/parte2.services'; // Ajusta la ruta a tu carpeta de servicios
+import { Inscripcion } from '../../models/parte2/parte2'; // Ajusta la ruta a tu modelo
 
 @Component({
   selector: 'app-parte2',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './parte2.component.html',
-  styleUrl: './parte2.component.css',
+  styleUrls: ['./parte2.component.css']
 })
-export class Parte2Component {}
+export class Parte2Component implements OnInit {
+  
+  // Objeto para capturar los datos del formulario
+  nuevaInscripcion: Inscripcion = new Inscripcion();
+  
+  // Array para mostrar en la tabla
+  listaInscripciones: Array<Inscripcion> = [];
+
+  // Variables para el resumen
+  resumen = {
+    estudiantes: 0,
+    egresados: 0,
+    particulares: 0,
+    totalMonto: 0
+  };
+
+  // Inyección de dependencias del servicio
+  constructor(private inscripcionService: InscripcionService) {}
+
+  ngOnInit(): void {
+    // Al iniciar, cargamos la lista (vacía por defecto)
+    this.obtenerLista();
+  }
+
+  // Evento gatillado por el cambio (change) en categoría o precio
+  calcularTotal(): void {
+    if (this.nuevaInscripcion.precio > 0 && this.nuevaInscripcion.categoriaAlumno !== '') {
+      this.nuevaInscripcion.precioFinal = this.inscripcionService.calcularDescuento(
+        this.nuevaInscripcion.precio,
+        this.nuevaInscripcion.categoriaAlumno
+      );
+    }
+  }
+
+  // Registra el array usando el service
+  registrar(): void {
+    // Validación básica
+    if (!this.nuevaInscripcion.dni || !this.nuevaInscripcion.categoriaAlumno || this.nuevaInscripcion.precio <= 0) {
+      alert('Por favor complete al menos el DNI, precio y categoría.');
+      return;
+    }
+
+    // Aseguramos de tener el cálculo final
+    this.calcularTotal();
+
+    // Enviamos una copia del objeto para evitar referencias dinámicas no deseadas
+    this.inscripcionService.registrarInscripcion({ ...this.nuevaInscripcion });
+
+    // Actualizamos la vista
+    this.obtenerLista();
+    this.actualizarResumen();
+
+    // Limpiamos el formulario instanciando un nuevo objeto
+    this.nuevaInscripcion = new Inscripcion();
+  }
+
+  // Obtiene los datos desde el Service
+  obtenerLista(): void {
+    this.listaInscripciones = this.inscripcionService.getInscripciones();
+  }
+
+  // Actualiza los cálculos del resumen inferior
+  actualizarResumen(): void {
+    this.resumen.estudiantes = this.listaInscripciones.filter(i => i.categoriaAlumno === '1').length;
+    this.resumen.egresados = this.listaInscripciones.filter(i => i.categoriaAlumno === '2').length;
+    this.resumen.particulares = this.listaInscripciones.filter(i => i.categoriaAlumno === '3').length;
+    
+    // Reduce para sumar todos los precios finales
+    this.resumen.totalMonto = this.listaInscripciones.reduce((acc, current) => acc + current.precioFinal, 0);
+  }
+}
