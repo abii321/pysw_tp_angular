@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; // Añadimos OnInit
 import { CommonModule } from '@angular/common';
+import { Punto2Service } from '../../services/punto2.service'; // Ajusta la ruta según tu proyecto
 
 @Component({
   selector: 'app-punto2',
@@ -8,24 +9,21 @@ import { CommonModule } from '@angular/common';
   templateUrl: './punto2.component.html',
   styleUrl: './punto2.component.css'
 })
-export class Punto2Component {
-  // Array predefinido de productos destacados
-  productos = [
-    { nombre: 'Notebook Asus 13L', descripcion: 'Disco 40GB, 15 pulgadas', img: 'assets/images/punto2/Notebook Asus 13L.jpg', precio: 45000 },
-    { nombre: 'Monitor LG 14', descripcion: 'Texto descriptivo producto 02', img: 'assets/images/punto2/Monitor LG 14.jpg', precio: 99000 },
-    { nombre: 'Teclado Mecánico', descripcion: 'Switch Red, RGB', img: 'assets/images/punto2/Teclado Mecánico.jpg', precio: 15000 },
-    { nombre: 'Mouse Logitech', descripcion: 'Inalámbrico, 4000 DPI', img: 'assets/images/punto2/Mouse Logitech.jpg', precio: 8500 }
-  ];
-
-  // Array para representar el carrito
+export class Punto2Component implements OnInit {
+  productos: Array<any> = []; // Ahora el array empieza vacío
   carrito: any[] = [];
   total: number = 0;
 
-  // Función para agregar al carrito
+  // Inyectamos el servicio en el constructor
+  constructor(private punto2Service: Punto2Service) { }
+
+  ngOnInit(): void {
+    // Al iniciar el componente, traemos los datos del servicio
+    this.productos = this.punto2Service.getProductos();
+  }
+
   agregarAlCarrito(producto: any) {
-    // Verificamos si ya existe para cumplir la regla: "solo se agrega UN SOLO producto"
     const existe = this.carrito.find(item => item.nombre === producto.nombre);
-    
     if (!existe) {
       this.carrito.push(producto);
       this.calcularTotal();
@@ -34,14 +32,12 @@ export class Punto2Component {
     }
   }
 
-  // Función para calcular el total a abonar
+  quitarDelCarrito(indice: number) {
+    this.carrito.splice(indice, 1);
+    this.calcularTotal();
+  }
+
   calcularTotal() {
     this.total = this.carrito.reduce((acc, item) => acc + item.precio, 0);
-  }
-  
-  // Función para quitar un producto del carrito
-  quitarDelCarrito(index: number) {
-    this.carrito.splice(index, 1);
-    this.calcularTotal();
   }
 }
