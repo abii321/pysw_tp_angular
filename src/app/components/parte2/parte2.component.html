@@ -1,1 +1,102 @@
-<p>parte2 works!</p>
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 p-4 mb-5">
+        <h2 class="text-primary mb-4 border-bottom pb-2">Inscripción a Cursos</h2>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">DNI del Alumno</label>
+                <input type="text" class="form-control" [(ngModel)]="nuevaInscripcion.dni" placeholder="Ej: 46123456">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Correo Electrónico</label>
+                <input type="email" class="form-control" [(ngModel)]="nuevaInscripcion.email"
+                    placeholder="alumno@unju.edu.ar">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Nombre del Curso</label>
+                <input type="text" class="form-control" [(ngModel)]="nuevaInscripcion.curso"
+                    placeholder="Ej: Programacion visual">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Precio Base ($)</label>
+                <input type="number" class="form-control" [(ngModel)]="nuevaInscripcion.precio"
+                    (change)="calcularTotal()">
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Categoría del Alumno</label>
+                <select class="form-select" [(ngModel)]="nuevaInscripcion.categoriaAlumno" (change)="calcularTotal()">
+                    <option value="">Seleccione una opción...</option>
+                    <option value="1">Estudiante (Descuento 35%)</option>
+                    <option value="2">Egresado (Descuento 50%)</option>
+                    <option value="3">Particular (Sin Descuento)</option>
+                </select>
+            </div>
+
+            <div *ngIf="nuevaInscripcion.precio > 0 && nuevaInscripcion.categoriaAlumno !== ''" class="col-12">
+                <div class="alert alert-success d-flex justify-content-between align-items-center">
+                    <span>El sistema calculó un total de:</span>
+                    <strong class="h4 mb-0">{{ nuevaInscripcion.precioFinal | currency }}</strong>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button (click)="registrar()" class="btn btn-primary w-100 py-2 fw-bold">REGISTRAR INSCRIPCIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h4 class="text-secondary"><i class="bi bi-list-ul"></i> Listado de Inscripciones</h4>
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>DNI</th>
+                        <th>Curso</th>
+                        <th>Email</th>
+                        <th>Fecha</th>
+                        <th class="text-end">Total Pagado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaInscripciones">
+                        <td>{{ item.dni }}</td>
+                        <td>{{ item.curso }}</td>
+                        <td><small>{{ item.email }}</small></td>
+                        <td>{{ item.fechaInscripcion | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-end fw-bold">{{ item.precioFinal | currency }}</td>
+                    </tr>
+                    <tr *ngIf="listaInscripciones.length === 0">
+                        <td colspan="5" class="text-center text-muted p-4">No hay inscripciones registradas actualmente.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card bg-light border-0 p-3">
+                <h5 class="border-bottom pb-2">Resumen de Categorías</h5>
+                <div class="d-flex justify-content-around text-center">
+                    <div><small>Estudiantes</small>
+                        <p class="h5 text-primary">{{ resumen.estudiantes }}</p>
+                    </div>
+                    <div><small>Egresados</small>
+                        <p class="h5 text-primary">{{ resumen.egresados }}</p>
+                    </div>
+                    <div><small>Particulares</small>
+                        <p class="h5 text-primary">{{ resumen.particulares }}</p>
+                    </div>
+                    <div class="border-start ps-4 text-end">
+                        <small class="fw-bold">TOTAL GENERAL</small>
+                        <p class="h4 text-success">{{ resumen.totalMonto | currency }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
