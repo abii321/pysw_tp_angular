@@ -1,1 +1,101 @@
-<p>parte2 works!</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Inscripción a Cursos</h2>
+
+  <!-- Formulario de Inscripción -->
+  <div class="card p-4 mb-4 shadow-sm">
+    <div class="row g-3">
+      
+      <div class="col-md-6">
+        <label class="form-label">DNI:</label>
+        <input type="text" class="form-control" [(ngModel)]="nuevaInscripcion.dni" placeholder="Ingrese DNI">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Email:</label>
+        <input type="email" class="form-control" [(ngModel)]="nuevaInscripcion.email" placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Curso:</label>
+        <input type="text" class="form-control" [(ngModel)]="nuevaInscripcion.curso" placeholder="Nombre del curso">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Fecha de Inscripción:</label>
+        <input type="date" class="form-control" [(ngModel)]="nuevaInscripcion.fechaInscripcion">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Precio Original:</label>
+        <input type="number" class="form-control" [(ngModel)]="nuevaInscripcion.precio" (change)="calcularTotal()" placeholder="0.00">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Categoría del Alumno:</label>
+        <select class="form-select" [(ngModel)]="nuevaInscripcion.categoriaAlumno" (change)="calcularTotal()">
+          <option value="" disabled selected>Seleccione una categoría</option>
+          <option value="1">Estudiante (35% Desc)</option>
+          <option value="2">Egresado (50% Desc)</option>
+          <option value="3">Particular (Sin Desc)</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Caja LABEL con ngIf -->
+    <div class="mt-4 p-3 bg-light border rounded text-center" *ngIf="nuevaInscripcion.precio && nuevaInscripcion.categoriaAlumno">
+      <h5 class="m-0 text-primary">
+        Precio Total de la Transacción: <span class="fw-bold">{{ nuevaInscripcion.precioFinal | currency:'ARS':'symbol':'1.2-2' }}</span>
+      </h5>
+    </div>
+
+    <div class="mt-4 text-end">
+      <button class="btn btn-success" (click)="registrar()">REGISTRAR INSCRIPCIÓN</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Lista de Inscripciones (Angular-Datatable / HTML Table) -->
+  <h3 class="mb-3">Inscripciones Realizadas</h3>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover border">
+      <thead class="table-dark">
+        <tr>
+          <th>DNI</th>
+          <th>Email</th>
+          <th>Curso</th>
+          <th>Fecha</th>
+          <th>Categoría</th>
+          <th>Precio Final</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ins of listaInscripciones">
+          <td>{{ ins.dni }}</td>
+          <td>{{ ins.email }}</td>
+          <td>{{ ins.curso }}</td>
+          <td>{{ ins.fechaInscripcion | date:'dd/MM/yyyy' }}</td>
+          <td>
+            {{ ins.categoriaAlumno === '1' ? 'Estudiante' : 
+               ins.categoriaAlumno === '2' ? 'Egresado' : 'Particular' }}
+          </td>
+          <td class="fw-bold">{{ ins.precioFinal | currency:'ARS':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Resumen General -->
+  <div class="card bg-light mt-4 shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title">Resumen de Inscripciones</h4>
+      <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item bg-transparent">Cantidad de Estudiantes: <strong>{{ resumen.estudiantes }}</strong></li>
+        <li class="list-group-item bg-transparent">Cantidad de Egresados: <strong>{{ resumen.egresados }}</strong></li>
+        <li class="list-group-item bg-transparent">Cantidad de Particulares: <strong>{{ resumen.particulares }}</strong></li>
+      </ul>
+      <h5 class="text-success">Total Recaudado: <strong>{{ resumen.totalMonto | currency:'ARS':'symbol':'1.2-2' }}</strong></h5>
+    </div>
+  </div>
+</div>
