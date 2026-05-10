@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { InscripcionService } from '../../services/parte2.services'; // Ajusta la ruta a tu carpeta de servicios
-import { Inscripcion } from '../../models/parte2/parte2'; // Ajusta la ruta a tu modelo
+import { FormsModule, NgForm } from '@angular/forms'; // Se agregó NgForm
+import { InscripcionService } from '../../services/parte2.services'; 
+import { Inscripcion } from '../../models/parte2/parte2'; 
+import { UniqueValueDirective } from '../parte2/duplicado.directive'; // Asegúrate de importar tu directiva real
 
 @Component({
   selector: 'app-parte2',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UniqueValueDirective],
   templateUrl: './parte2.component.html',
   styleUrls: ['./parte2.component.css']
 })
@@ -45,11 +46,14 @@ export class Parte2Component implements OnInit {
     }
   }
 
-  // Registra el array usando el service
-  registrar(): void {
-    // Validación básica
-    if (!this.nuevaInscripcion.dni || !this.nuevaInscripcion.categoriaAlumno || this.nuevaInscripcion.precio <= 0) {
-      alert('Por favor complete al menos el DNI, precio y categoría.');
+  // Registra el array usando el service, recibe el formulario completo para validarlo
+  registrar(formInscripcion: NgForm): void {
+    // Validación extra por si se vulnera el HTML
+    if (formInscripcion.invalid) {
+      // Forzamos a marcar todos los campos como "tocados" para que se muestren los errores
+      Object.values(formInscripcion.controls).forEach(control => {
+        control.markAsTouched();
+      });
       return;
     }
 
@@ -63,8 +67,13 @@ export class Parte2Component implements OnInit {
     this.obtenerLista();
     this.actualizarResumen();
 
-    // Limpiamos el formulario instanciando un nuevo objeto
+    // Limpiamos el formulario y los estados de error visuales de Bootstrap
+    formInscripcion.resetForm();
+    
+    // Instanciamos un nuevo objeto limpio para el binding
     this.nuevaInscripcion = new Inscripcion();
+    // Es posible que al resetear el select quede nulo, aseguramos que empiece vacío para el placeholder
+    this.nuevaInscripcion.categoriaAlumno = ''; 
   }
 
   // Obtiene los datos desde el Service
