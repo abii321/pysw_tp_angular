@@ -42,6 +42,7 @@ export class Punto3Component {
     this.juegoActivo = false;
     this.finPartida = true;
     this.ganador = false;
+    this.levantarHabilitado =0;
     this.punto3Service.endGame();
     
     this.cards = this.punto3Service.cards;
