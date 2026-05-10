@@ -13,10 +13,10 @@ import { UniqueValueDirective } from '../parte2/duplicado.directive'; // Asegúr
   styleUrls: ['./parte2.component.css']
 })
 export class Parte2Component implements OnInit {
-  
+
   // Objeto para capturar los datos del formulario
   nuevaInscripcion: Inscripcion = new Inscripcion();
-  
+
   // Array para mostrar en la tabla
   listaInscripciones: Array<Inscripcion> = [];
 
@@ -29,7 +29,7 @@ export class Parte2Component implements OnInit {
   };
 
   // Inyección de dependencias del servicio
-  constructor(private inscripcionService: InscripcionService) {}
+  constructor(private inscripcionService: InscripcionService) { }
 
   ngOnInit(): void {
     // Al iniciar, cargamos la lista (vacía por defecto)
@@ -55,6 +55,14 @@ export class Parte2Component implements OnInit {
         control.markAsTouched();
       });
       return;
+      this.nuevaInscripcion.fechaInscripcion = new Date().toISOString();
+
+      this.calcularTotal();
+      this.inscripcionService.registrarInscripcion({ ...this.nuevaInscripcion });
+
+      this.obtenerLista();
+      this.actualizarResumen();
+      this.nuevaInscripcion = new Inscripcion();
     }
 
     // Aseguramos de tener el cálculo final
@@ -86,7 +94,7 @@ export class Parte2Component implements OnInit {
     this.resumen.estudiantes = this.listaInscripciones.filter(i => i.categoriaAlumno === '1').length;
     this.resumen.egresados = this.listaInscripciones.filter(i => i.categoriaAlumno === '2').length;
     this.resumen.particulares = this.listaInscripciones.filter(i => i.categoriaAlumno === '3').length;
-    
+
     // Reduce para sumar todos los precios finales
     this.resumen.totalMonto = this.listaInscripciones.reduce((acc, current) => acc + current.precioFinal, 0);
   }

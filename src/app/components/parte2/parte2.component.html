@@ -5,17 +5,13 @@
   <div class="card p-4 mb-4 shadow-sm">
     <form #formInscripcion="ngForm" (ngSubmit)="registrar(formInscripcion)" novalidate>
       <div class="row g-3">
-        
+
         <div class="col-md-6">
           <label class="form-label">DNI:</label>
-          <input type="text" class="form-control" 
-                 name="dni"
-                 [(ngModel)]="nuevaInscripcion.dni" 
-                 #dni="ngModel"
-                 required pattern="^[0-9]{7,8}$"
-                 appUniqueValue="dni"
-                 [ngClass]="{'is-invalid': dni.invalid && (dni.dirty || dni.touched)}"
-                 placeholder="Ingrese DNI (Sin puntos)">
+          <input type="text" class="form-control" name="dni" [(ngModel)]="nuevaInscripcion.dni" #dni="ngModel" required
+            pattern="^[0-9]{7,8}$" appUniqueValue="dni"
+            [ngClass]="{'is-invalid': dni.invalid && (dni.dirty || dni.touched)}"
+            placeholder="Ingrese DNI (Sin puntos)">
           <div class="invalid-feedback" *ngIf="dni.errors?.['required']">El DNI es obligatorio.</div>
           <div class="invalid-feedback" *ngIf="dni.errors?.['pattern']">Debe contener entre 7 y 8 números.</div>
           <div class="invalid-feedback" *ngIf="dni.errors?.['notUnique']">El DNI ya está registrado.</div>
@@ -23,14 +19,10 @@
 
         <div class="col-md-6">
           <label class="form-label">Email:</label>
-          <input type="email" class="form-control" 
-                 name="email"
-                 [(ngModel)]="nuevaInscripcion.email" 
-                 #email="ngModel"
-                 required email
-                 appUniqueValue="email"
-                 [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}"
-                 placeholder="correo@ejemplo.com">
+          <input type="email" class="form-control" name="email" [(ngModel)]="nuevaInscripcion.email" #email="ngModel"
+            required email appUniqueValue="email"
+            [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}"
+            placeholder="correo@ejemplo.com">
           <div class="invalid-feedback" *ngIf="email.errors?.['required']">El email es obligatorio.</div>
           <div class="invalid-feedback" *ngIf="email.errors?.['email']">Ingrese un formato de correo válido.</div>
           <div class="invalid-feedback" *ngIf="email.errors?.['notUnique']">El email ya está registrado.</div>
@@ -38,51 +30,35 @@
 
         <div class="col-md-6">
           <label class="form-label">Curso:</label>
-          <input type="text" class="form-control" 
-                 name="curso"
-                 [(ngModel)]="nuevaInscripcion.curso" 
-                 #curso="ngModel"
-                 required minlength="3"
-                 [ngClass]="{'is-invalid': curso.invalid && (curso.dirty || curso.touched)}"
-                 placeholder="Nombre del curso">
+          <input type="text" class="form-control" name="curso" [(ngModel)]="nuevaInscripcion.curso" #curso="ngModel"
+            required minlength="3" [ngClass]="{'is-invalid': curso.invalid && (curso.dirty || curso.touched)}"
+            placeholder="Nombre del curso">
           <div class="invalid-feedback" *ngIf="curso.errors?.['required']">El nombre del curso es obligatorio.</div>
           <div class="invalid-feedback" *ngIf="curso.errors?.['minlength']">Debe tener al menos 3 caracteres.</div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Fecha de Inscripción:</label>
-          <input type="date" class="form-control" 
-                 name="fechaInscripcion"
-                 [(ngModel)]="nuevaInscripcion.fechaInscripcion"
-                 #fecha="ngModel"
-                 required
-                 [ngClass]="{'is-invalid': fecha.invalid && (fecha.dirty || fecha.touched)}">
+          <input type="date" class="form-control" name="fechaInscripcion"
+            [(ngModel)]="nuevaInscripcion.fechaInscripcion" #fecha="ngModel" required
+            [ngClass]="{'is-invalid': fecha.invalid && (fecha.dirty || fecha.touched)}">
           <div class="invalid-feedback">La fecha es obligatoria.</div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Precio Original:</label>
-          <input type="number" class="form-control" 
-                 name="precio"
-                 [(ngModel)]="nuevaInscripcion.precio" 
-                 #precio="ngModel"
-                 required min="1"
-                 (change)="calcularTotal()" 
-                 [ngClass]="{'is-invalid': precio.invalid && (precio.dirty || precio.touched)}"
-                 placeholder="0.00">
+          <input type="number" class="form-control" name="precio" [(ngModel)]="nuevaInscripcion.precio"
+            #precio="ngModel" required min="1" (change)="calcularTotal()"
+            [ngClass]="{'is-invalid': precio.invalid && (precio.dirty || precio.touched)}" placeholder="0.00">
           <div class="invalid-feedback" *ngIf="precio.errors?.['required']">El precio es obligatorio.</div>
           <div class="invalid-feedback" *ngIf="precio.errors?.['min']">El precio debe ser mayor a 0.</div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Categoría del Alumno:</label>
-          <select class="form-select" 
-                  name="categoriaAlumno"
-                  [(ngModel)]="nuevaInscripcion.categoriaAlumno" 
-                  #categoria="ngModel"
-                  required
-                  (change)="calcularTotal()"
-                  [ngClass]="{'is-invalid': categoria.invalid && (categoria.dirty || categoria.touched)}">
+          <select class="form-select" name="categoriaAlumno" [(ngModel)]="nuevaInscripcion.categoriaAlumno"
+            #categoria="ngModel" required (change)="calcularTotal()"
+            [ngClass]="{'is-invalid': categoria.invalid && (categoria.dirty || categoria.touched)}">
             <option value="" disabled selected>Seleccione una categoría</option>
             <option value="1">Estudiante (35% Desc)</option>
             <option value="2">Egresado (50% Desc)</option>
@@ -94,15 +70,18 @@
       </div>
 
       <!-- Caja LABEL con ngIf -->
-      <div class="mt-4 p-3 bg-light border rounded text-center" *ngIf="nuevaInscripcion.precio > 0 && nuevaInscripcion.categoriaAlumno">
+      <div class="mt-4 p-3 bg-light border rounded text-center"
+        *ngIf="nuevaInscripcion.precio > 0 && nuevaInscripcion.categoriaAlumno">
         <h5 class="m-0 text-primary">
-          Precio Total de la Transacción: <span class="fw-bold">{{ nuevaInscripcion.precioFinal | currency:'ARS':'symbol':'1.2-2' }}</span>
+          Precio Total de la Transacción: <span class="fw-bold">{{ nuevaInscripcion.precioFinal |
+            currency:'ARS':'symbol':'1.2-2' }}</span>
         </h5>
       </div>
 
       <div class="mt-4 text-end">
         <!-- El botón se deshabilita automáticamente si el formulario es inválido -->
-        <button type="submit" class="btn btn-success" [disabled]="formInscripcion.invalid">REGISTRAR INSCRIPCIÓN</button>
+        <button type="submit" class="btn btn-success" [disabled]="formInscripcion.invalid">REGISTRAR
+          INSCRIPCIÓN</button>
       </div>
     </form>
   </div>
@@ -130,8 +109,8 @@
           <td>{{ ins.curso }}</td>
           <td>{{ ins.fechaInscripcion | date:'dd/MM/yyyy' }}</td>
           <td>
-            {{ ins.categoriaAlumno === '1' ? 'Estudiante' : 
-               ins.categoriaAlumno === '2' ? 'Egresado' : 'Particular' }}
+            {{ ins.categoriaAlumno === '1' ? 'Estudiante' :
+            ins.categoriaAlumno === '2' ? 'Egresado' : 'Particular' }}
           </td>
           <td class="fw-bold">{{ ins.precioFinal | currency:'ARS':'symbol':'1.2-2' }}</td>
         </tr>
@@ -144,11 +123,15 @@
     <div class="card-body">
       <h4 class="card-title">Resumen de Inscripciones</h4>
       <ul class="list-group list-group-flush mb-3">
-        <li class="list-group-item bg-transparent">Cantidad de Estudiantes: <strong>{{ resumen.estudiantes }}</strong></li>
-        <li class="list-group-item bg-transparent">Cantidad de Egresaditos: <strong>{{ resumen.egresados }}</strong></li>
-        <li class="list-group-item bg-transparent">Cantidad de Particulares: <strong>{{ resumen.particulares }}</strong></li>
+        <li class="list-group-item bg-transparent">Cantidad de Estudiantes: <strong>{{ resumen.estudiantes }}</strong>
+        </li>
+        <li class="list-group-item bg-transparent">Cantidad de Egresaditos: <strong>{{ resumen.egresados }}</strong>
+        </li>
+        <li class="list-group-item bg-transparent">Cantidad de Particulares: <strong>{{ resumen.particulares }}</strong>
+        </li>
       </ul>
-      <h5 class="text-success">Total Recaudado: <strong>{{ resumen.totalMonto | currency:'ARS':'symbol':'1.2-2' }}</strong></h5>
+      <h5 class="text-success">Total Recaudado: <strong>{{ resumen.totalMonto | currency:'ARS':'symbol':'1.2-2'
+          }}</strong></h5>
     </div>
   </div>
 </div>
