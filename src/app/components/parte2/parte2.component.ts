@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms'; // Se agregó NgForm
 import { InscripcionService } from '../../services/parte2.services'; 
-import { Inscripcion } from '../../models/parte2/parte2'; 
+import { Inscripcion } from '../../models/parte2'; 
 import { UniqueValueDirective } from '../parte2/duplicado.directive'; // Asegúrate de importar tu directiva real
 
 @Component({

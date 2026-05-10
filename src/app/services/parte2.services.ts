@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Inscripcion } from '../models/parte2/parte2'; // Importamos el modelo
+import { Inscripcion } from '../models/parte2'; // Importamos el modelo
 
 @Injectable({
     providedIn: 'root'
