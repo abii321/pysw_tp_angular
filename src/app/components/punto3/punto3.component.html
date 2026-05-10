@@ -1,24 +1,31 @@
-<div class="container p-md-2 p-lg-4">
+<div class="container p-md-2 p-lg-4" style="min-height: 80vh;">
+
+    <h3 class="">Juego de Memoria</h3>
+
     <div class="row">
 
         <div class="col-md-9">
             <div class="row">
                 <div class="card col-12 col-sm-6 col-md-4 col-lg-3 border-0 g-2" *ngFor="let card of cards; let i = index" (click)="darVueltaCard(card,i)">
-                    <img [src]="!card.vuelta ? 'assets/images/card0.jpg' : card.url" class="card-img w-100 " alt="carta"
+                    <img [src]="!card.vuelta ? 'assets/images/punto3/card00.png' : card.url" class="card-img w-100 " alt="carta"
                         style="height: 150px; object-fit: cover;">
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3 align-content-center">
-            <button class="btn btn-primary" (click)="iniciarJuego()" *ngIf="juegoActivo==false && finPartida==true">Iniciar</button>
-            <p *ngIf="juegoActivo==true && finPartida==false">Intentos restantes: {{intentos}}</p>
-
-            <button class="btn btn-primary" *ngIf="juegoActivo==true || finPartida==false" (click)="reiniciarJuego()">Reiniciar</button>
-            <p *ngIf="ganador==true">Good game! You won!</p>
-            <p *ngIf="finPartida==true && ganador==false && juegoActivo==true">Good try! You lost!</p>
+        <div class="col-md-3 mt-1 mt-md-2">
+            <button class="btn btn-primary m-2" (click)="iniciarJuego()" *ngIf="juegoActivo==false && finPartida==true">Iniciar</button>
             
-            <button class="btn btn-primary" *ngIf="finPartida==false" (click)="intentarJuego()">Intentar</button>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary m-1 m-md-2" *ngIf="juegoActivo==true || finPartida==false" (click)="reiniciarJuego()">Reiniciar</button>
+                <button class="btn btn-primary m-1 m-md-2" *ngIf="finPartida==false" (click)="intentarJuego()">Intentar</button>
+            </div>
+
+            <p class="d-flex justify-content-center" *ngIf="juegoActivo==true && finPartida==false">Intentos restantes: {{intentos}}</p>
+            <p class="d-flex justify-content-center" *ngIf="ganador==true">Good game! You won!</p>
+            <p class="d-flex justify-content-center" *ngIf="finPartida==true && ganador==false && juegoActivo==true">Good try! You lost!</p>
+            
+            
         </div>
     </div>
 
