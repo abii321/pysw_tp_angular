@@ -1,6 +1,6 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
-import { InscripcionService } from '../../services/parte2.services';
+import { InscripcionService } from '../../../services/parte2.services';
 
 @Directive({
   selector: '[appUniqueValue]',
