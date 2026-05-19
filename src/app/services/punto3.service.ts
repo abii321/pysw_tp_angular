@@ -9,6 +9,7 @@ export class Punto3Service {
 
   constructor(){
     this.cards = new Array<Punto3>();
+    this.cards = 
     this.cards = [
       //{ id:0, url: 'assets/images/card0.jpg', encontrada: true, },
       { id:1, url: 'assets/images/punto3/card1.jpg', vuelta:false, },
@@ -26,17 +27,26 @@ export class Punto3Service {
     ]
   }
 
+
   initGame(){
     // orden aleatorio
     for (let i = this.cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1)); // indice aleat
       [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]; 
     }
-
-    //this.cards.forEach( c => { c.encontrada=false; });
   }
 
   endGame(){
     this.cards.forEach(c => { c.vuelta = false; });
   }
+  
+  compararCartas(i:number, j:number): boolean {
+    if(this.cards[i].url != this.cards[j].url){
+      this.cards[i].vuelta = false;
+      this.cards[j].vuelta = false;
+      return false;
+    }
+    return true;
+  }
+
 }
