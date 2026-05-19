@@ -1,8 +1,8 @@
-import { Component, numberAttribute } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Punto3 } from '../../models/punto3.class';
-import { Punto3Service } from '../../services/punto3.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Punto3Service } from '../../services/punto3.service';
 
 @Component({
   selector: 'app-punto3',
@@ -18,9 +18,10 @@ export class Punto3Component {
   intentos: number = 0;
   levantarHabilitado: number = 0;
   pares: number = 0;
-  
+  fIndex : number = -1;
+  sIndex : number = -1;  
 
-  constructor(private punto3Service: Punto3Service, private router : Router ){
+  constructor(private punto3Service: Punto3Service, private router : Router, private cdr: ChangeDetectorRef   ){
     this.cards = new Array<Punto3>;
   }
   
@@ -42,7 +43,7 @@ export class Punto3Component {
     this.juegoActivo = false;
     this.finPartida = true;
     this.ganador = false;
-    this.levantarHabilitado =0;
+    this.levantarHabilitado = 0;
     this.punto3Service.endGame();
     
     this.cards = this.punto3Service.cards;
@@ -59,8 +60,6 @@ export class Punto3Component {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  fIndex : number = -1;
-  sIndex : number = -1;
   async darVueltaCard( card : Punto3, indice: number ){
     if (this.levantarHabilitado <= 0 || card.vuelta ) return;
 
@@ -72,16 +71,19 @@ export class Punto3Component {
     
 
     if(this.levantarHabilitado==0){
-      if( this.cards[this.fIndex].url != this.cards[this.sIndex].url){
-        await this.delay(1000);
-        this.cards[this.fIndex].vuelta = false;
-        this.cards[this.sIndex].vuelta = false;
-      }
-      else this.pares++;
-      this.fIndex=-1; this.sIndex==-1;
+      await this.delay(1500);
+      let iguales = this.punto3Service.compararCartas(this.fIndex, this.sIndex);
 
-      if(this.pares==6) this.ganador=true;
+      if(iguales) this.pares++;
+      this.fIndex=-1; this.sIndex=-1;
+
+      if(this.pares==6) {
+        this.ganador=true;
+        this.finPartida = true;
+      }
       if(this.intentos==0) this.finPartida=true;
+
+      this.cdr.detectChanges(); 
     }
     
   }
